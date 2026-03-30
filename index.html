@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduList – The Next Generation Learning</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0e1a;
+      --surface: #121829;
+      --card: #1a2238;
+      --accent: #f0c040;
+      --accent2: #4fc3f7;
+      --text: #e8eaf6;
+      --muted: #7986a3;
+      --border: rgba(255,255,255,0.07);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(10,14,26,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.7rem;
+      letter-spacing: -1px;
+      color: var(--accent);
+    }
+    .logo span { color: var(--accent2); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-auth {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-ghost:hover { border-color: var(--accent2); color: var(--accent2); }
+    .btn-primary {
+      background: var(--accent);
+      border: none;
+      color: #0a0e1a;
+      font-weight: 700;
+    }
+    .btn-primary:hover { background: #ffd060; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 100px 24px 80px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(79,195,247,0.1);
+      border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 0.8rem;
+      color: var(--accent2);
+      margin-bottom: 28px;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      max-width: 780px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.7;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .hero-cta {
+      margin-top: 36px;
+      display: flex;
+      gap: 14px;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .btn-lg { padding: 14px 32px; font-size: 1rem; border-radius: 10px; }
+
+    /* ── TAGLINE STRIP ── */
+    .tagline-strip {
+      position: relative;
+      z-index: 1;
+      background: var(--accent);
+      color: #0a0e1a;
+      text-align: center;
+      padding: 14px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+    }
+
+    /* ── FEATURE CARDS ── */
+    .features {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin: 60px 48px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .feature-card {
+      background: var(--card);
+      padding: 40px 36px;
+      transition: background 0.25s;
+      animation: fadeUp 0.6s ease both;
+    }
+    .feature-card:hover { background: #1f2d48; }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+    .feature-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--accent2);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .feature-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── SCHOLARSHIP SECTION ── */
+    .scholarship {
+      position: relative;
+      z-index: 1;
+      margin: 0 48px 60px;
+      background: linear-gradient(135deg, #1a2a18 0%, #0f1e2a 100%);
+      border: 1px solid rgba(79,195,247,0.15);
+      border-radius: 16px;
+      padding: 48px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      overflow: hidden;
+    }
+
+    .scholarship::before {
+      content: 'A';
+      position: absolute;
+      right: 56px;
+      font-family: 'Syne', sans-serif;
+      font-size: 14rem;
+      font-weight: 800;
+      color: rgba(240,192,64,0.07);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .scholarship-content h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .scholarship-content p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      max-width: 440px;
+    }
+    .scholarship-note {
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: rgba(240,192,64,0.7);
+      font-style: italic;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 32px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    footer span { color: var(--accent2); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .features { grid-template-columns: 1fr; margin: 40px 24px; }
+      .scholarship { flex-direction: column; margin: 0 24px 40px; padding: 36px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Edu<span>List</span></div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Courses</a></li>
+      <li><a href="#">Scholarships</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+    <div class="nav-auth">
+      <a href="#" class="btn btn-ghost">Login</a>
+      <a href="#" class="btn btn-primary">Sign Up</a>
+    </div>
+  </nav>
+
+  <!-- TAGLINE STRIP -->
+  <div class="tagline-strip">⚡ WILL TAKE YOU LEAD &nbsp;•&nbsp; THE NEXT GENERATION LEARNING</div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">🎓 Next Generation Learning Platform</div>
+    <h1>Learn Smart.<br/><em>Lead Further.</em></h1>
+    <p class="hero-sub">
+      EduList brings you missed classes, holiday catch-ups, exam prep, and pure fun learning — all in one place.
+    </p>
+    <div class="hero-cta">
+      <a href="#" class="btn btn-primary btn-lg">Get Started Free</a>
+      <a href="#" class="btn btn-ghost btn-lg">Explore Courses</a>
+    </div>
+  </section>
+
+  <!-- FEATURE CARDS -->
+  <div class="features">
+    <div class="feature-card" style="animation-delay:0.1s">
+      <div class="feature-icon">📚</div>
+      <div class="feature-label">Never Fall Behind</div>
+      <h3>Missed Class?</h3>
+      <p>Catch up on any class you missed — recorded lessons available anytime, anywhere.</p>
+    </div>
+    <div class="feature-card" style="animation-delay:0.2s">
+      <div class="feature-icon">📅</div>
+      <div class="feature-label">Study Anytime</div>
+      <h3>Were on Holiday</h3>
+      <p>Holiday doesn't mean falling behind. Access your classes even when school is out.</p>
+    </div>
+    <div class="feature-card" style="animation-delay:0.3s">
+      <div class="feature-icon">📝</div>
+      <div class="feature-label">Ace Your Tests</div>
+      <h3>Exam Ahead</h3>
+      <p>Smart revision tools and practice sets to prepare you thoroughly for every exam.</p>
+    </div>
+    <div class="feature-card" style="animation-delay:0.4s; grid-column: 1 / -1; border-top: 1px solid var(--border);">
+      <div class="feature-icon">🎮</div>
+      <div class="feature-label">Enjoy Learning</div>
+      <h3>Fun & Excitement</h3>
+      <p>Quizzes, leaderboards, challenges — learning that feels like playing. Stay motivated every day.</p>
+    </div>
+  </div>
+
+  <!-- SCHOLARSHIP SECTION -->
+  <div class="scholarship">
+    <div class="scholarship-content">
+      <h2>🏅 Play A Scholarship</h2>
+      <p>
+        Think you've got what it takes? Compete in our scholarship challenges and earn rewards for your academic performance.
+      </p>
+      <p class="scholarship-note">★ You play — we pay. Win a scholarship today.</p>
+      <br/>
+      <a href="#" class="btn btn-primary">Apply Now</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    &copy; 2026 <span>EduList</span> — The Next Generation Learning Platform. All rights reserved.
+  </footer>
+
+</body>
+</html>
