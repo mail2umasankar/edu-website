@@ -42,17 +42,24 @@
 
     /* ── NAV ── */
     nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 48px;
-      background: rgba(10,14,26,0.85);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-    }
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom: 1px solid transparent;
+    transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
+  }
+
+nav.scrolled {
+  background: rgba(24, 35, 54, 0.95);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
 
     .logo {
       font-family: 'Syne', sans-serif;
@@ -62,6 +69,15 @@
       color: var(--accent);
     }
     .logo span { color: var(--accent2); }
+    .logo-tagline {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.55rem;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
 
     .nav-links {
       display: flex;
@@ -301,7 +317,10 @@
 
   <!-- NAV -->
   <nav>
-    <div class="logo">Edu<span>Twist</span></div>
+  <div class="logo">
+    Edu<span>Twist</span>
+    <div class="logo-tagline">The Next Generation Learning</div>
+  </div>
     <ul class="nav-links">
       <li><a href="#">Home</a></li>
       <li><a href="#">Courses</a></li>
@@ -314,12 +333,9 @@
     </div>
   </nav>
 
-  <!-- TAGLINE STRIP -->
-  <div class="tagline-strip">⚡ WILL TAKE YOU LEAD &nbsp;•&nbsp; THE NEXT GENERATION LEARNING</div>
-
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-badge">🎓 Next Generation Learning Platform</div>
+    <div class="hero-badge">🎓 Next Generation Learning Platform will take you Lead</div>
     <h1>Learn Smart.<br/><em>Lead Further.</em></h1>
     <p class="hero-sub">
       EduTwist brings you missed classes, holiday catch-ups, exam prep, and pure fun learning — all in one place.
@@ -341,7 +357,7 @@
     <div class="feature-card" style="animation-delay:0.2s">
       <div class="feature-icon">📅</div>
       <div class="feature-label">Study Anytime</div>
-      <h3>Were on Holiday</h3>
+      <h3>You were on Holiday</h3>
       <p>Holiday doesn't mean falling behind. Access your classes even when school is out.</p>
     </div>
     <div class="feature-card" style="animation-delay:0.3s">
@@ -361,7 +377,7 @@
   <!-- SCHOLARSHIP SECTION -->
   <div class="scholarship">
     <div class="scholarship-content">
-      <h2>🏅 Play A Scholarship</h2>
+      <h2>🏅 Play for Scholarship</h2>
       <p>
         Think you've got what it takes? Compete in our scholarship challenges and earn rewards for your academic performance.
       </p>
@@ -375,6 +391,17 @@
   <footer>
     &copy; 2026 <span>EduTwist</span> — The Next Generation Learning Platform. All rights reserved.
   </footer>
+
+  <script>
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 10) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
+</script>
 
 </body>
 </html>
